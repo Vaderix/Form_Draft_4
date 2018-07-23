@@ -74,8 +74,8 @@ public class Login_Screen extends AppCompatActivity {
 
     public void onSignIn(View v) {
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);//What the hell is this?
-        imm.hideSoftInputFromWindow(username.getWindowToken(), 0);                                //What the hell is this?
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(username.getWindowToken(), 0);                             
 
         x_username = username.getText().toString();
         x_password = password.getText().toString();
