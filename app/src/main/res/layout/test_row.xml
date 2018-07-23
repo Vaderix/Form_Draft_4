@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="50"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/nw_vehicleNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:gravity="bottom"
+            android:text="Vehicle Number"
+            android:textAlignment="center"
+            android:textColor="@color/snowText"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/nw_lastTime"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="30"
+            android:gravity="center"
+            android:text="Last Time"
+            android:textColor="@color/snowText"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/nw_lastAddress"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="50"
+        android:gravity="center"
+        android:text="Last Address"
+        android:textColor="@color/snowText"
+        android:textSize="15sp" />
+
+</LinearLayout>

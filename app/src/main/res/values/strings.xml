@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Form_Draft_4</string>
+
+    <string name="drawerOpen">Open</string>
+    <string name="drawerClosed">Close</string>
+
+    <string-array name="testArray">
+        <item>Test 1</item>
+        <item>Test 2</item>
+    </string-array>
+
+    <string-array name="accountType">
+        <item>Client</item>
+        <item>Dealer</item>
+    </string-array>
+
+    <string-array name="vehicleType">
+        <item>Car</item>
+        <item>Bus</item>
+        <item>Truck</item>
+        <item>Motorcycle</item>
+    </string-array>
+
+    <string-array name="deviceName">
+        <item>GT06</item>
+        <item>TK103</item>
+        <item>TR02</item>
+        <item>Visiontek</item>
+        <item>GT300</item>
+        <item>WebTrack</item>
+        <item>TR06</item>
+        <item>TK102</item>
+        <item>Kwick116</item>
+        <item>GT06A</item>
+        <item>TK06A</item>
+        <item>HO2</item>
+        <item>GT02</item>
+        <item>TK100</item>
+        <item>JV200</item>
+        <item>ET300</item>
+        <item>Coban</item>
+        <item>Mini TK103</item>
+        <item>JM01</item>
+        <item>JM08</item>
+        <item>GT100</item>
+        <item>GT06F</item>
+        <item>Fortune FT</item>
+        <item>Max-V24</item>
+        <item>84VT visiontek</item>
+        <item>FM1120</item>
+        <item>C100</item>
+        <item>ATS</item>
+        <item>Ffever</item>
+        <item>VT01CL</item>
+    </string-array>
+</resources>

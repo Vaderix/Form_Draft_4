@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mDrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddDevice_Screen">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/background_img"
+        android:fillViewport="true">
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/constraintWhole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="50dp">
+
+            <Button
+                android:id="@+id/addDeviceB"
+                android:layout_width="135dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/top_notselected_style"
+                android:text="Add Device"
+                android:textColor="@color/snowText"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/RelativeLayout01"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/logOutB"
+                android:layout_width="135dp"
+                android:layout_height="45dp"
+                android:background="@drawable/top_selected_style"
+                android:onClick="logoutClicked"
+                android:text="Logout"
+                android:textColor="#2c2d2e"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/addDeviceB"
+                app:layout_constraintTop_toTopOf="@+id/addDeviceB" />
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addDeviceB">
+
+                <TextView
+                    android:id="@+id/selectAccountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Account:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/selectAccSpinner"
+                    android:layout_width="270dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/selectAccountText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:entries="@array/testArray"
+                    android:popupBackground="#bbdeef"
+                    android:spinnerMode="dropdown" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout01">
+
+
+                <TextView
+                    android:id="@+id/selectDeviceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Device:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/selectDeviceSpinner"
+                    android:layout_width="270dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/selectDeviceText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:entries="@array/deviceName"
+                    android:popupBackground="#bbdeef"
+                    android:spinnerMode="dialog" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout02">
+
+
+                <TextView
+                    android:id="@+id/deviceIDText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device ID:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/deviceID"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/deviceIDText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Device ID"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout03">
+
+                <TextView
+                    android:id="@+id/simPhoneNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inserted SIM's Phone Number:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/simPhoneNumber"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/simPhoneNumberText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Inserted Sim Phone Number"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout04">
+
+
+                <TextView
+                    android:id="@+id/deviceIMEIText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device IMEI:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/deviceIMEI"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/deviceIMEIText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Device IMEI"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout05">
+
+
+                <TextView
+                    android:id="@+id/simSerialText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sim card Serial Number:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/simSerial"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/simSerialText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="SIM card Serial Number"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout07"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout06">
+
+
+                <TextView
+                    android:id="@+id/vehicleNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Number:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/vehicleNumber"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/vehicleNumberText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Vehicle Number"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout08"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout07">
+
+
+                <TextView
+                    android:id="@+id/vehicleTypeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Type:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/vehicleTypeSpinner"
+                    android:layout_width="270dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/vehicleTypeText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:entries="@array/vehicleType"
+                    android:popupBackground="#bbdeef"
+                    android:spinnerMode="dropdown" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout09"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout08">
+
+
+                <TextView
+                    android:id="@+id/driverNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driver Name:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/driverName"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/driverNameText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Driver Name"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout09">
+
+
+                <TextView
+                    android:id="@+id/driverNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driver Number:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/driverNumber"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/driverNumberText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="Driver Number"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout10">
+
+
+                <TextView
+                    android:id="@+id/subTillText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subscription Till:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/subTill"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/subTillText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/snowText"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout11">
+
+
+                <TextView
+                    android:id="@+id/odoReadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Odometer Reading:"
+                    android:textColor="@color/snowText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/odoReading"
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/odoReadingText"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/input_style"
+                    android:hint="In KMs"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/snowText"
+                    android:textColorHint="#8099a6"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayoutLast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RelativeLayout12">
+
+                <Button
+                    android:id="@+id/deviceSubmit"
+                    android:layout_width="170dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bot_buttons_style"
+                    android:onClick="submitClicked"
+                    android:text="Submit"
+                    android:textColor="@color/snowText"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/navigation_menu">
+
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

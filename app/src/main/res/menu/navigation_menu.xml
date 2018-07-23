@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_Dashboard"
+            android:icon="@drawable/x_dashboard"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_addAccount"
+            android:icon="@drawable/x_addaccount1"
+            android:title="Add Account" />
+        <item
+            android:id="@+id/nav_addUser"
+            android:icon="@drawable/x_adduser1"
+            android:title="Add User" />
+        <item
+            android:id="@+id/nav_addDevice"
+            android:icon="@drawable/x_adddevice1"
+            android:title="Add Device" />
+        <item
+            android:id="@+id/nav_addFuel"
+            android:icon="@drawable/x_addfuel"
+            android:title="Add Fuel Values" />
+        <item
+            android:id="@+id/nav_viewFuel"
+            android:icon="@drawable/x_viewfuel"
+            android:title="View Fuel Values" />
+
+    </group>
+
+</menu>
