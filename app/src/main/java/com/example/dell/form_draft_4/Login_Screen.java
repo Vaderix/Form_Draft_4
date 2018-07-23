@@ -23,11 +23,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class Login_Screen extends AppCompatActivity {
 
     private static final String TAG = "Login_Screen";
-    private static final String LOGIN_URL = "https://www.reddit.com/api/login/";               //Enter the login URL here
+    private static final String LOGIN_URL = "https://www.reddit.com/api/login/";
+    private static final String CP_LOGIN_URL = "http://205.147.110.128:2122/";
 
     EditText username;
     EditText password;
@@ -82,6 +84,102 @@ public class Login_Screen extends AppCompatActivity {
 
         login(x_username, x_password);
     }
+
+    private void login(final String username, String password) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(CP_LOGIN_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        ServiceAPI loginAPI = retrofit.create(ServiceAPI.class);
+
+        HashMap<String, String> headerMap = new HashMap<String, String>();
+        headerMap.put("Content-Type", "application/x-www-form-urlencoded");
+
+        Call<String> call = loginAPI.userLogin(headerMap, username, password);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                try {
+                    String testSTR = response.body();
+
+                    Log.d(TAG, "onResponse: Server feed: " + response.body());
+                    Log.d(TAG, "onResponse: Server Response: " + response.toString());
+
+                    if (testSTR.equals("failed")) {
+
+                        Log.d(TAG, "-----------------IS THIS SHOWING UP?!-----------------");
+                        mProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(Login_Screen.this, "Incorrect credentials!", Toast.LENGTH_SHORT).show();
+
+                    } else {
+
+                        mProgressBar.setVisibility(View.GONE);
+
+                        setLoginPreferences(x_username, x_password);
+                        Toast.makeText(Login_Screen.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(Login_Screen.this, Dashboard.class);
+                        startActivity(i);
+
+                    }
+
+                } catch (
+                        NullPointerException e)
+
+                {
+                    Log.e(TAG, "onResponse: NullPointerException: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                mProgressBar.setVisibility(View.GONE);
+
+                Log.e(TAG, "\nonFailure: Something went wrong! " + t.getMessage());
+                Toast.makeText(Login_Screen.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void setLoginPreferences(String username, String password) {
+
+        if (remMe.isChecked()) {
+            loginPrefsEditor.putBoolean("saveLogin", true);                                     //Remember to change key to unique key
+            loginPrefsEditor.putString("Login_Rem_Username", username);                                     //Remember to change key to unique key
+            loginPrefsEditor.putString("Login_Rem_Password", password);                                     //Remember to change key to unique key
+            loginPrefsEditor.commit();
+        } else {
+            loginPrefsEditor.clear();
+            loginPrefsEditor.commit();
+        }
+    }
+
+    //Will set it up to call on successful login Later (After fixing the login issue)
+
+    private void seSessionParams(int serialNum, String accID, String userType){
+        SharedPreferences sessionPreferences = PreferenceManager.getDefaultSharedPreferences(Login_Screen.this);
+        SharedPreferences.Editor sessionEditor = sessionPreferences.edit();
+
+        Log.d(TAG, "setSessionParams: Storing Session Variables: \n" +
+                "Serial Number: " + serialNum + "\n" +
+                "Account ID: " + accID + "\n" +
+                "User Type: " + userType + "\n");
+
+        sessionEditor.putInt("Session_serialNum", serialNum);
+        sessionEditor.commit();
+        sessionEditor.putString("Session_accID", accID);
+        sessionEditor.commit();
+        sessionEditor.putString("Session_userType", userType);
+        sessionEditor.commit();
+    }
+
+
+    /*
+
+    //For Reddit Login:
 
     private void login(final String username, String password) {
 
@@ -150,20 +248,12 @@ public class Login_Screen extends AppCompatActivity {
                 Toast.makeText(Login_Screen.this, "Something went wrong!", Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }*/
 
-    private void setLoginPreferences(String username, String password) {
 
-        if (remMe.isChecked()) {
-            loginPrefsEditor.putBoolean("saveLogin", true);                                     //Remember to change key to unique key
-            loginPrefsEditor.putString("Login_Rem_Username", username);                                     //Remember to change key to unique key
-            loginPrefsEditor.putString("Login_Rem_Password", password);                                     //Remember to change key to unique key
-            loginPrefsEditor.commit();
-        } else {
-            loginPrefsEditor.clear();
-            loginPrefsEditor.commit();
-        }
-    }
+    /*
+
+    //For reddit login, saving Modhash and Cookie:
 
     private void setSessionParams(String username, String modhash, String cookie) {
 
@@ -181,5 +271,5 @@ public class Login_Screen extends AppCompatActivity {
         sessionEditor.commit();
         sessionEditor.putString("Session_Cookie", cookie);
         sessionEditor.commit();
-    }
+    }*/
 }
