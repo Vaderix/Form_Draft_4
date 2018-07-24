@@ -145,6 +145,7 @@ public class Login_Screen extends AppCompatActivity {
             passwordProp.setName("password");
             passwordProp.setValue(x_password);
             passwordProp.setType(String.class);
+            request.addProperty(passwordProp);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.implicitTypes = true;
