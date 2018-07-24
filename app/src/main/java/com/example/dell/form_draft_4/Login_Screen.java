@@ -32,9 +32,9 @@ public class Login_Screen extends AppCompatActivity {
 
     private static final String TAG = "Login_Screen";
 
-    private static final String SOAP_ACTION = "http://205.147.110.128/CheckLoginCredendials";
-    private static final String METHOD_NAME = "CheckLoginCredendials";
-    private static final String NAMESPACE = "http://205.147.110.128/";
+    private static final String SOAP_ACTION = "http://tempuri.org/CheckLoginCredendials";
+    private static final String METHOD_NAME = "CheckLoginCredendialsResult";
+    private static final String NAMESPACE = "http://tempuri.org/";
     private static final String URL = "http://205.147.110.128/CpServices.asmx";
 
     EditText username;
