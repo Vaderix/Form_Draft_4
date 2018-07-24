@@ -200,6 +200,13 @@ public class Login_Screen extends AppCompatActivity {
                 Toast.makeText(Login_Screen.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
                 setLoginPreferences(x_username, x_password);
+                ////----------------------
+                // Set Session Params Here (after fixing login)
+                ////----------------------
+
+                Intent i = new Intent(Login_Screen.this, Dashboard.class);
+                startActivity(i);
+
             } else {
                 Log.d(TAG, "onPostExecute: Login Failed!");
                 Toast.makeText(Login_Screen.this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
