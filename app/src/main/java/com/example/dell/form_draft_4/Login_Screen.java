@@ -149,14 +149,16 @@ public class Login_Screen extends AppCompatActivity {
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.implicitTypes = true;
-            envelope.setOutputSoapObject(request);
             envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
 
             HttpTransportSE httpTransport = new HttpTransportSE(URL);
             httpTransport.debug = true;
 
             try {
                 httpTransport.call(SOAP_ACTION, envelope);
+                Log.d(TAG, "HTTP Transport Call: Is this message showing up?");
+
             } catch (HttpResponseException e) {
                 // TODO Auto-generated catch block
                 Log.e(TAG, "HTTPLOG: " + e.getMessage());
@@ -176,7 +178,7 @@ public class Login_Screen extends AppCompatActivity {
                 result = (Object) envelope.getResponse();
                 Log.d(TAG, "Response: " + String.valueOf(result));
 
-                logSuccess = !(String.valueOf(result).equals("failed")||String.valueOf(result).equals("null"));
+                logSuccess = !(String.valueOf(result).equals("failed") || String.valueOf(result).equals("null"));
 
             } catch (SoapFault e) {
                 // TODO Auto-generated catch block
