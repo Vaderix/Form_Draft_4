@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.security.NetworkSecurityPolicy;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class Login_Screen extends AppCompatActivity {
     private static final String SOAP_ACTION = "http://tempuri.org/CheckLoginCredendials";
     private static final String METHOD_NAME = "CheckLoginCredendials";
     private static final String NAMESPACE = "http://tempuri.org/";
-    private static final String URL = "http://205.147.110.128/CpServices.asmx";
+    private static final String URL = "http://205.147.110.128:2122/CpServices.asmx";
 
     EditText username;
     EditText password;
@@ -137,6 +138,7 @@ public class Login_Screen extends AppCompatActivity {
             PropertyInfo unameProp = new PropertyInfo();
             unameProp.setName("userId");//Define the variable name in the web service method
             unameProp.setValue(x_username);//set value for userName variable
+            Log.d(TAG, "doInBackground: CHECK USERNAME: "+ x_username);
             unameProp.setType(String.class);//Define the type of the variable
             request.addProperty(unameProp);//Pass properties to the variable
 
@@ -144,6 +146,7 @@ public class Login_Screen extends AppCompatActivity {
             PropertyInfo passwordProp = new PropertyInfo();
             passwordProp.setName("password");
             passwordProp.setValue(x_password);
+            Log.d(TAG, "doInBackground: CHECK PASSWORD: "+x_password);
             passwordProp.setType(String.class);
             request.addProperty(passwordProp);
 
@@ -157,7 +160,7 @@ public class Login_Screen extends AppCompatActivity {
 
             try {
                 httpTransport.call(SOAP_ACTION, envelope);
-                Log.d(TAG, "HTTP Transport Call: Is this message showing up?");
+                Log.d(TAG, "After HTTP Transport Call: Is this message showing up?");
 
             } catch (HttpResponseException e) {
                 // TODO Auto-generated catch block
