@@ -3,6 +3,7 @@ package com.example.dell.form_draft_4;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,20 +17,25 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.HashMap;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpResponseException;
+import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParserException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import java.io.IOException;
 
 public class Login_Screen extends AppCompatActivity {
 
     private static final String TAG = "Login_Screen";
-    private static final String LOGIN_URL = "https://www.reddit.com/api/login/";
-    private static final String CP_LOGIN_URL = "http://205.147.110.128:2122/";
+
+    private static final String SOAP_ACTION = "http://205.147.110.128/CheckLoginCredendials";
+    private static final String METHOD_NAME = "CheckLoginCredendials";
+    private static final String NAMESPACE = "http://205.147.110.128/";
+    private static final String URL = "http://205.147.110.128/CpServices.asmx";
 
     EditText username;
     EditText password;
@@ -75,73 +81,15 @@ public class Login_Screen extends AppCompatActivity {
     public void onSignIn(View v) {
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(username.getWindowToken(), 0);                             
+        imm.hideSoftInputFromWindow(username.getWindowToken(), 0);
 
         x_username = username.getText().toString();
         x_password = password.getText().toString();
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        login(x_username, x_password);
-    }
-
-    private void login(final String username, String password) {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CP_LOGIN_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
-                .build();
-
-        ServiceAPI loginAPI = retrofit.create(ServiceAPI.class);
-
-        HashMap<String, String> headerMap = new HashMap<String, String>();
-        headerMap.put("Content-Type", "application/x-www-form-urlencoded");
-
-        Call<String> call = loginAPI.userLogin(headerMap, username, password);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                try {
-                    String testSTR = response.body();
-
-                    Log.d(TAG, "onResponse: Server feed: " + response.body());
-                    Log.d(TAG, "onResponse: Server Response: " + response.toString());
-
-                    if (testSTR.equals("failed")) {
-
-                        Log.d(TAG, "-----------------IS THIS SHOWING UP?!-----------------");
-                        mProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(Login_Screen.this, "Incorrect credentials!", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        mProgressBar.setVisibility(View.GONE);
-
-                        setLoginPreferences(x_username, x_password);
-                        Toast.makeText(Login_Screen.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(Login_Screen.this, Dashboard.class);
-                        startActivity(i);
-
-                    }
-
-                } catch (
-                        NullPointerException e)
-
-                {
-                    Log.e(TAG, "onResponse: NullPointerException: " + e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                mProgressBar.setVisibility(View.GONE);
-
-                Log.e(TAG, "\nonFailure: Something went wrong! " + t.getMessage());
-                Toast.makeText(Login_Screen.this, "Something went wrong!", Toast.LENGTH_LONG).show();
-            }
-        });
+        myAsyncTask loginTask = new myAsyncTask();
+        loginTask.execute();
     }
 
     private void setLoginPreferences(String username, String password) {
@@ -159,7 +107,7 @@ public class Login_Screen extends AppCompatActivity {
 
     //Will set it up to call on successful login Later (After fixing the login issue)
 
-    private void seSessionParams(int serialNum, String accID, String userType){
+    private void seSessionParams(int serialNum, String accID, String userType) {
         SharedPreferences sessionPreferences = PreferenceManager.getDefaultSharedPreferences(Login_Screen.this);
         SharedPreferences.Editor sessionEditor = sessionPreferences.edit();
 
@@ -176,100 +124,85 @@ public class Login_Screen extends AppCompatActivity {
         sessionEditor.commit();
     }
 
+    private class myAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
-    /*
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Boolean logSuccess = false;
+            Log.d(TAG, "doInBackground: Started");
 
-    //For Reddit Login:
+            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
-    private void login(final String username, String password) {
+            //Pass value for userID variable of the web service
+            PropertyInfo unameProp = new PropertyInfo();
+            unameProp.setName("userId");//Define the variable name in the web service method
+            unameProp.setValue(x_username);//set value for userName variable
+            unameProp.setType(String.class);//Define the type of the variable
+            request.addProperty(unameProp);//Pass properties to the variable
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(LOGIN_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            //Pass value for Password variable of the web service
+            PropertyInfo passwordProp = new PropertyInfo();
+            passwordProp.setName("password");
+            passwordProp.setValue(x_password);
+            passwordProp.setType(String.class);
 
-        ServiceAPI loginAPI = retrofit.create(ServiceAPI.class);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.implicitTypes = true;
+            envelope.setOutputSoapObject(request);
+            envelope.dotNet = true;
 
-        HashMap<String, String> headerMap = new HashMap<String, String>();
-        headerMap.put("Content-Type", "application/json");
+            HttpTransportSE httpTransport = new HttpTransportSE(URL);
+            httpTransport.debug = true;
 
-        Call<CheckLogin> call = loginAPI.signIn(headerMap, username, username, password, "json");
+            try {
+                httpTransport.call(SOAP_ACTION, envelope);
+            } catch (HttpResponseException e) {
+                // TODO Auto-generated catch block
+                Log.e(TAG, "HTTPLOG: " + e.getMessage());
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                Log.e(TAG, "IOLOG: " + e.getMessage());
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                // TODO Auto-generated catch block
+                Log.e(TAG, "XMLLOG: " + e.getMessage());
+                e.printStackTrace();
+            } //send request
 
-        call.enqueue(new Callback<CheckLogin>() {
-            @Override
-            public void onResponse(Call<CheckLogin> call, Response<CheckLogin> response) {
+            Object result;
+            try {
+                result = (Object) envelope.getResponse();
+                Log.d(TAG, "Response: " + String.valueOf(result));
 
-                try {
-                    String testSTR = response.body().toString();
-                    String[] verifyLogin = testSTR.split("data=");
+                logSuccess = !(String.valueOf(result).equals("failed")||String.valueOf(result).equals("null"));
 
-                    Log.d(TAG, "onResponse: Server feed: " + response.body().toString());
-                    Log.d(TAG, "onResponse: Server Response: " + response.toString());
-                    Log.d(TAG, "onResponse: testSTR Value: " + testSTR);
-                    Log.d(TAG, "onResponse: verifyLogin Value: " + verifyLogin[1]);
-
-                    String modhash = response.body().getJson().getData().getModhash();
-                    String cookie = response.body().getJson().getData().getCookie();
-
-                    Log.d(TAG, "onResponse: ModHash: " + modhash);
-                    Log.d(TAG, "onResponse: Cookie: " + cookie);
-
-                    if (verifyLogin[1].equals("null}}")) {
-
-                        Log.d(TAG, "-----------------IS THIS SHOWING UP?!-----------------");
-                        mProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(Login_Screen.this, "Incorrect credentials!", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        setSessionParams(username, modhash, cookie);
-                        mProgressBar.setVisibility(View.GONE);
-
-                        setLoginPreferences(x_username, x_password);
-                        Toast.makeText(Login_Screen.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(Login_Screen.this, Dashboard.class);
-                        startActivity(i);
-
-                    }
-
-                } catch (
-                        NullPointerException e)
-
-                {
-                    Log.e(TAG, "onResponse: NullPointerException: " + e.getMessage());
-                }
+            } catch (SoapFault e) {
+                // TODO Auto-generated catch block
+                Log.e("SOAPLOG", e.getMessage());
+                e.printStackTrace();
             }
 
-            @Override
-            public void onFailure(Call<CheckLogin> call, Throwable t) {
-                mProgressBar.setVisibility(View.GONE);
+            return logSuccess;
+        }
 
-                Log.e(TAG, "\nonFailure: Something went wrong! " + t.getMessage());
-                Toast.makeText(Login_Screen.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+
+        @Override
+        protected void onPostExecute(Boolean logSuccess) {
+
+            mProgressBar.setVisibility(View.GONE);
+
+            if (logSuccess) {
+                Log.d(TAG, "onPostExecute: Login Successful!");
+                Toast.makeText(Login_Screen.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+
+                setLoginPreferences(x_username, x_password);
+            } else {
+                Log.d(TAG, "onPostExecute: Login Failed!");
+                Toast.makeText(Login_Screen.this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
             }
-        });
-    }*/
 
 
-    /*
-
-    //For reddit login, saving Modhash and Cookie:
-
-    private void setSessionParams(String username, String modhash, String cookie) {
-
-        SharedPreferences sessionPreferences = PreferenceManager.getDefaultSharedPreferences(Login_Screen.this);
-        SharedPreferences.Editor sessionEditor = sessionPreferences.edit();
-
-        Log.d(TAG, "setSessionParams: Storing Session Variables: \n" +
-                "username: " + username + "\n" +
-                "modhash: " + modhash + "\n" +
-                "cookie: " + cookie + "\n");
-
-        sessionEditor.putString("Session_User", username);
-        sessionEditor.commit();
-        sessionEditor.putString("Session_ModHash", modhash);
-        sessionEditor.commit();
-        sessionEditor.putString("Session_Cookie", cookie);
-        sessionEditor.commit();
-    }*/
+        }
+    }
 }
